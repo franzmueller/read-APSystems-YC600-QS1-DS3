@@ -179,6 +179,7 @@ int     Mqtt_Format = 0;
 #define led_onb           2  // onboard led was 2
 #define ZB_RESET          14 // D5
 #define ZB_TX             15 // D8
+#define POLL_RATE 60
 String toSend = "";
  
 int value = 0; 
@@ -346,13 +347,13 @@ void loop() {
 
 #ifndef TEST
 // ******************************************************************
-//              polling every 300 seconds
+//              polling every POLL_RATE seconds
 // ******************************************************************
 
   unsigned long nu = millis();  // de tijd dat het programma al loopt
-   if (nu - laatsteMeting >= 1000UL * 300) 
+   if (nu - laatsteMeting >= 1000UL * POLL_RATE) 
    {
-        laatsteMeting += 1000UL * 300 ; // wordt iedere keer (meetRes * miliseconden) groter;
+        laatsteMeting += 1000UL * POLL_RATE ; // wordt iedere keer (meetRes * miliseconden) groter;
          //if(now() > switchonTime && now() < switchoffTime )
          if(dayTime && Polling) // we only poll at day and when Polling = true 
          { //only at day
