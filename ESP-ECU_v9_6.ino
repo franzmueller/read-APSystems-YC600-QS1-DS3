@@ -27,11 +27,11 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org");
 const byte DNS_PORT = 53;
 DNSServer dnsServer;
-#include "HTML.H"
+#include "HTML.h"
 //#include "AAA_CONFIG_INVERTERS.H"
-#include "AAA_MENUPAGE.H"
-#include "PORTAL_HTML.H"
-//#include "CONFIG_MQTT.H"
+#include "AAA_MENUPAGE.h"
+#include "PORTAL_HTML.h"
+//#include "CONFIG_MQTT.h"
 //extern "C" {
 //    #include "user_interface.h"
 //}
@@ -156,7 +156,7 @@ String  Mqtt_outTopic = "domoticz/in";
 String  Mqtt_Username;
 String  Mqtt_Password;
 String  Mqtt_Port =     "1883";
-//bool    Mqtt_Enabled =  false;
+bool    Mqtt_Enabled =  false;
 int     Mqtt_Format = 0;  
   int event = 0;
 

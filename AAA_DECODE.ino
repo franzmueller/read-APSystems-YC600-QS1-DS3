@@ -414,6 +414,25 @@ String sValue="\"svalue\":\"";
        toMQTT += ",\"ch3\":[" + String(Inv_Data[which].dcv[3]) + "," + String(Inv_Data[which].dcc[3]) + "," + String(Inv_Data[which].power[3]) + "," + String(en_saved[which][3]) + "]";
         }
        toMQTT += ",\"totals\":[" + String(Inv_Data[which].power[4]) + "," + String(Inv_Data[which].en_total, 2) + "]}";
+
+      case 5:
+       float power_total = String(Inv_Data[which].power[0]).toFloat() + String(Inv_Data[which].power[1]).toFloat();
+
+       if( Inv_Prop[which].invType == 1 ) {
+        power_total += String(Inv_Data[which].power[2]).toFloat() + String(Inv_Data[which].power[3]).toFloat();
+       }
+       
+       toMQTT += ",\"acv\":" + String(Inv_Data[which].acv) + ",\"freq\":" + String(Inv_Data[which].freq) + ",\"temp\":" + String(Inv_Data[which].heath) + ",\"energyTotal\":" + String(Inv_Data[which].en_total, 2) + ", \"powerTotal\": "+ String(power_total, 2);
+
+       toMQTT += ", \"panel0\": { \"dcv\":" + String(Inv_Data[which].dcv[0]) + ", \"dcc\":" + String(Inv_Data[which].dcc[0]) + ", \"pwr\":" + String(Inv_Data[which].power[0]) + ", \"energy\":" + String(en_saved[which][0]) + "}";
+       toMQTT += ", \"panel1\": { \"dcv\":" + String(Inv_Data[which].dcv[1]) + ", \"dcc\":" + String(Inv_Data[which].dcc[1]) + ", \"pwr\":" + String(Inv_Data[which].power[1]) + ", \"energy\":" + String(en_saved[which][1]) + "}";
+
+       if( Inv_Prop[which].invType == 1 ) {
+        toMQTT += ", \"panel2\": { \"dcv\":" + String(Inv_Data[which].dcv[2]) + ", \"dcc\":" + String(Inv_Data[which].dcc[2]) + ", \"pwr\":" + String(Inv_Data[which].power[2]) + ", \"energy\":" + String(en_saved[which][2]) + "}";
+        toMQTT += ", \"panel3\": { \"dcv\":" + String(Inv_Data[which].dcv[3]) + ", \"dcc\":" + String(Inv_Data[which].dcc[3]) + ", \"pwr\":" + String(Inv_Data[which].power[3]) + ", \"energy\":" + String(en_saved[which][3]) + "}";
+       }
+       toMQTT += "}";
+       break;  
     }
  
 
