@@ -383,9 +383,9 @@ if(Mqtt_Format == 0) return;
     strcat(Mqtt_send, String(Inv_Prop[which].invIdx).c_str());
   }
   bool reTain = false;
-  char pan[50]={0};
-  char tail[40]={0};
-  char toMQTT[512]={0};
+  char pan[100]={0};
+  char tail[100]={0};
+  char toMQTT[768]={0};
 
 // the json to domoticz must be something like {"idx" : 7, "nvalue" : 0,"svalue" : "90;2975.00"}
  
@@ -403,12 +403,12 @@ if(Mqtt_Format == 0) return;
         strcat(toMQTT, pan);
 
         if( Inv_Prop[which].invType == 1 ) { // add ch2 and ch3
-            sprintf(pan, ",\"ch2\":[%.1f,%.1f,%.1f,%.2f]", Inv_Data[which].dcv[2], Inv_Data[which].dcc[2], Inv_Data[which].power[2], en_saved[which][2]);  
+            sprintf(pan, ",\"panel2\":{\"dcv\":%.1f,\"dcc\":%.1f,\"pwr\":%.1f,\"energy\":%.2f}", Inv_Data[which].dcv[2], Inv_Data[which].dcc[2], Inv_Data[which].power[2], en_saved[which][2]);  
             strcat(toMQTT, pan);
-            sprintf(pan, ",\"ch3\":[%.1f,%.1f,%.1f,%.2f]", Inv_Data[which].dcv[3], Inv_Data[which].dcc[3], Inv_Data[which].power[3], en_saved[which][3]);  
+            sprintf(pan, ",\"panel3\":{\"dcv\":%.1f,\"dcc\":%.1f,\"pwr\":%.1f,\"energy\":%.2f}", Inv_Data[which].dcv[3], Inv_Data[which].dcc[3], Inv_Data[which].power[3], en_saved[which][3]);  
             strcat(toMQTT, pan);
         }
-        sprintf(tail, ",\"energyTotal\":%.1f, \"powerTotal\":%.2f]}", Inv_Data[which].pw_total, Inv_Data[which].en_total);
+        sprintf(tail, ",\"energyTotal\":%.1f, \"powerTotal\":%.2f}", Inv_Data[which].pw_total, Inv_Data[which].en_total);
         strcat(toMQTT, tail);
        break;  
        
@@ -462,6 +462,7 @@ if(Mqtt_Format == 0) return;
        break;
     }
 
+  if(diagNose) {delay(100); ws.textAll("mqtt: " + String(toMQTT));}
 
    // mqttConnect() checks first if we are connected, if not we connect anyway
    if(mqttConnect() ) MQTT_Client.publish ( Mqtt_send, toMQTT, reTain );
