@@ -83,9 +83,9 @@ toSend.replace("!@@!", cont);
 
 //DebugPrintln(" zendlogpage :build eventlist");  
   byte Log_Count = 0;
-  Log_MaxReached ? Log_Count = Log_MaxEvents : Log_Count = Log_CurrentEvent;  // determine if the max number of event is already reached
+  Log_MaxReached ? Log_Count = Log_MaxEvents : Log_Count = logNr;  // determine if the max number of event is already reached
 
-  int j = Log_CurrentEvent;
+  int j = logNr;
   String content = "";
   for ( int i = 1; i <= Log_Count; i++ ) {
  //Serial.println("een regel van de lijst, nummer i = "); //Serial.println(i);    
@@ -94,11 +94,11 @@ toSend.replace("!@@!", cont);
   if (j ==-1) j = Log_MaxEvents - 1; // if we are under the first index of the array ,we go to the last
   ////////////////// One table line ///////////////////
   content +=             "<tr><td>";
-  content +=             Log_EventList[j].Log_date;
+  content +=             Log_Events[j].date;
   content +=             "</td><td>";
-  content +=             Log_EventList[j].Log_kind;
+  content +=             Log_Events[j].kind;
   content +=             "</td><td>"; 
-  content +=             Log_EventList[j].Log_message;
+  content +=             Log_Events[j].message;
   content +=             "</td>";
 ////////////////// One table line ///////////////////
   }
@@ -116,27 +116,29 @@ toSend.replace("<cont>", content);
           nu = "";
           what = "";}
         //DebugPrint("nu = "); DebugPrintln(nu);
-        Log_EventList[Log_CurrentEvent].Log_date = nu;
-        Log_EventList[Log_CurrentEvent].Log_kind = what;
+        nu.toCharArray(Log_Events[logNr].date, 14);
+        //Log_Events[logNr].date = nu;
+        //Log_Events[logNr].kind = what;
         //Log_EventList[Log_CurrentEvent].Log_issued = who;
-        Log_EventList[Log_CurrentEvent].Log_message = message;
-        Log_CurrentEvent++;
-        if (Log_CurrentEvent >= Log_MaxEvents)
+        message.toCharArray(Log_Events[logNr].message, 13);
+        //Log_Events[logNr].message = message;
+        logNr++;
+        if (logNr >= Log_MaxEvents)
         {
-            Log_CurrentEvent = 0;//start again
+            logNr = 0;//start again
             Log_MaxReached = true;
         }
 }
 void Clear_Log() {
     //Serial.println("clearing the log");
-    if(Log_CurrentEvent != 0) {
+    if(logNr != 0) {
       String nu="";
       String what="";
       String message="";
             for (int i=0; i <= Log_MaxEvents; i++) {
             Update_Log("clear", "");
             }
-         Log_CurrentEvent = 0;//start again
+         logNr = 0;//start again
          Log_MaxReached = false;     
         //Serial.println("log cleared");   
     }

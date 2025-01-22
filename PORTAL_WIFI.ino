@@ -132,7 +132,7 @@ toSend.replace("{ma}", String(WiFi.macAddress()) );
       if ( LittleFS.exists("/basisconfig.json") && event!=101 ) { //show if file is present
        toSend.replace("erase' hidden", "erase'");
       } else {
-        //Serial.println(F("no basisconfig.json"));  
+        Serial.println(F("no basisconfig.json"));  
       }
        // we show this when ! 101 and static ip
       if( static_ip[0] != '\0' && static_ip[0] != '0' && event!=101) { //show if static is present
@@ -232,7 +232,7 @@ void eraseFiles(AsyncWebServerRequest *request) {
   toSend += F("</head><body><h2>erasing the filesystem, please wait... !</h2></body></html>");
   request->send ( 200, "text/html", toSend ); //zend bevestiging
 
-     if (LittleFS.exists("/wifiConfig.conf")) { LittleFS.remove("/wificonfig.json"); } 
+     if (LittleFS.exists("/wificonfig.json")) { LittleFS.remove("/wificonfig.json"); } 
      if (LittleFS.exists("/colorConfig.json")) { LittleFS.remove("/colorConfig.json"); }
      if (LittleFS.exists("/basisconfig.json")) { LittleFS.remove("/basisconfig.json"); }
      if (LittleFS.exists("/timerconfig.json")) { LittleFS.remove("/timerconfig.json"); }
@@ -287,7 +287,7 @@ void wifiConnect() {
 int connectWifi() {  
 
   if (ssid != "") {
-    //Serial.println(F("we have a new ssid, trying to connect to that"));
+    Serial.println(F("we have a new ssid, trying to connect to that"));
     //trying to fix connection in progress hanging
     ETS_UART_INTR_DISABLE();
     wifi_station_disconnect();
@@ -297,7 +297,7 @@ int connectWifi() {
   } else { 
     // we don't have new ssid, so we see if there is one saved
     if (WiFi.SSID().length() > 0) {
-      //Serial.println(F("we have saved credentials, use these"));
+      Serial.println(F("we have saved credentials, use these"));
       //trying to fix connection in progress hanging
       ETS_UART_INTR_DISABLE();
       wifi_station_disconnect();
@@ -310,11 +310,11 @@ int connectWifi() {
      delay(1000);
      Serial.print("\nwifi state = " + String(WiFi.status()));
      connectAttempts += 1;
-     if (connectAttempts==10) {break;}
+     if (connectAttempts==30) {break;}
   }
-   //Serial.println(F("\nwe are out of  the for=loop, event = " + String(event) ));
+  Serial.println("we are out of  the for=loop");
 
-   if(connectAttempts < 10 ) {
+   if(connectAttempts < 30 ) {
       checkFixed(); // set static ip if configured
       return 1;
    } else {

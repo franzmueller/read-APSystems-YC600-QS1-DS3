@@ -66,7 +66,7 @@ bool leesStruct(String whichfile) {
 //                      de gegevens opslaan in SPIFFS                         *  
 // ****************************************************************************
 void wifiConfigsave() {
-   //DebugPrintln("saving config");
+   Serial.println("saving config");
 
     DynamicJsonDocument doc(1024);
     JsonObject json = doc.to<JsonObject>();   
@@ -78,12 +78,10 @@ void wifiConfigsave() {
     json["zomerTijd"] = zomerTijd;
     json["securityLevel"] = securityLevel;
     File configFile = LittleFS.open("/wificonfig.json", "w");
-//    if (!configFile) {
-//      //DebugPrintln("open file for writing failed!");
-//    }
-    //DebugPrintln("wificonfig.json written");
-//    #ifdef DEBUG 
-////    json.printTo(Serial);
+    if (!configFile) {
+     Serial.println("open file for writing failed!");
+    }
+    Serial.println("wificonfig.json written");
     serializeJson(json, Serial);
     Serial.println(F("")); 
 //    #endif

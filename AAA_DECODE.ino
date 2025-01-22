@@ -395,8 +395,21 @@ if(Mqtt_Format == 0) return;
        break;
        // length 46
 
-     case 2: // for not domoticz we have a different mqtt string how does this look?
-       snprintf(toMQTT, sizeof(toMQTT), "{\"inv\":\"%d\",\"temp\":\"%.1f\",\"p0\":\"%.1f\",\"p1\":\"%.1f\",\"p2\":\"%.1f\",\"p3\":\"%.1f\",\"energy\":\"%.2f\"}" ,which, Inv_Data[which].heath, Inv_Data[which].power[0],Inv_Data[which].power[1], Inv_Data[which].power[2], Inv_Data[which].power[3], Inv_Data[which].en_total);
+     case 2: // hijack this template for custom format
+       snprintf(toMQTT, sizeof(toMQTT), "{\"inv_serial\":\"%s\",\"freq\":%.1f,\"temp\":%.1f,\"acv\":%.1f" , Inv_Prop[which].invSerial, Inv_Data[which].freq, Inv_Data[which].heath, Inv_Data[which].acv);      
+        sprintf(pan, ",\"panel0\":{\"dcv\":%.1f,\"dcc\":%.1f,\"pwr\":%.1f,\"energy\":%.2f}", Inv_Data[which].dcv[0], Inv_Data[which].dcc[0], Inv_Data[which].power[0], en_saved[which][0]);  
+        strcat(toMQTT, pan);
+        sprintf(pan, ",\"panel1\":{\"dcv\":%.1f,\"dcc\":%.1f,\"pwr\":%.1f,\"energy\":%.2f}", Inv_Data[which].dcv[1], Inv_Data[which].dcc[1], Inv_Data[which].power[1], en_saved[which][1]);  
+        strcat(toMQTT, pan);
+
+        if( Inv_Prop[which].invType == 1 ) { // add ch2 and ch3
+            sprintf(pan, ",\"ch2\":[%.1f,%.1f,%.1f,%.2f]", Inv_Data[which].dcv[2], Inv_Data[which].dcc[2], Inv_Data[which].power[2], en_saved[which][2]);  
+            strcat(toMQTT, pan);
+            sprintf(pan, ",\"ch3\":[%.1f,%.1f,%.1f,%.2f]", Inv_Data[which].dcv[3], Inv_Data[which].dcc[3], Inv_Data[which].power[3], en_saved[which][3]);  
+            strcat(toMQTT, pan);
+        }
+        sprintf(tail, ",\"energyTotal\":%.1f, \"powerTotal\":%.2f]}", Inv_Data[which].pw_total, Inv_Data[which].en_total);
+        strcat(toMQTT, tail);
        break;  
        
      case 3:
