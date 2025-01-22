@@ -408,7 +408,7 @@ if(Mqtt_Format == 0) return;
             sprintf(pan, ",\"panel3\":{\"dcv\":%.1f,\"dcc\":%.1f,\"pwr\":%.1f,\"energy\":%.2f}", Inv_Data[which].dcv[3], Inv_Data[which].dcc[3], Inv_Data[which].power[3], en_saved[which][3]);  
             strcat(toMQTT, pan);
         }
-        sprintf(tail, ",\"energyTotal\":%.1f, \"powerTotal\":%.2f}", Inv_Data[which].pw_total, Inv_Data[which].en_total);
+        sprintf(tail, ",\"energyTotal\":%.1f, \"powerTotal\":%.2f}", Inv_Data[which].en_total, Inv_Data[which].pw_total);
         strcat(toMQTT, tail);
        break;  
        
